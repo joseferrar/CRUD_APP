@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { gql, useQuery, useMutation, useLazyQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,6 +19,8 @@ import {
   UPDATE_USER,
 } from "../graphql/Queries";
 import { toast } from "react-toastify";
+import ProfileForm from "../components/Forms/ProfileForm";
+import ProfileList from "../components/Lists/ProfileList";
 
 function Profile() {
   const token = localStorage.getItem("token");
@@ -29,37 +32,16 @@ function Profile() {
   });
   const [getUsers, { data: getuser, error }] = useLazyQuery(GET_USER);
 
-  const [updateUser, { data: datae }] = useMutation(UPDATE_USER);
-  console.log(data?.user?.email);
   const [disabled, setDisabled] = useState(true);
 
-  const initialValues = {
-    username: data?.user?.username,
-    email: data?.user?.email,
-    mobile: data?.user?.mobile,
-    id: data?.user?.id,
-  }
-  const formik = useFormik({
-    initialValues,
-    validationSchema: yup.object({
-      username: yup.string().required("Username is required"),
-      email: yup.string().email().required("Email is required"),
-      mobile: yup.number().required("Phone Number is required"),
-    }),
-    onSubmit: async (data) => {
-      console.log("dataaaaaaaaaaaaaaaaaaaa", data);
-      await updateUser({ variables: data });
-      await getUsers();
-
-      toast.success("Updated sucessfully!!!");
-      setDisabled(true);
-    },
-  });
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   const Editbtn = () => {
     setDisabled(!disabled);
   };
-console.log("loag", loading)
+  console.log("loag", loading);
   return (
     <Box
       sx={{
@@ -83,7 +65,7 @@ console.log("loag", loading)
         {" "}
         <div style={{ display: "flex" }}>
           <Typography component="h1" variant="h5">
-            My Profile - {data?.note?.name}
+            {disabled ? "My Profile" : "Edit Profile"}
           </Typography>
           <IconButton
             onClick={Editbtn}
@@ -95,69 +77,40 @@ console.log("loag", loading)
             <EditIcon />
           </IconButton>
         </div>
-        <form style={{ marginTop: theme.spacing(3), width: "100%" }}>
-          <TextField
-            style={{ marginBottom: theme.spacing(3) }}
-            variant="outlined"
-            required
+        {disabled ? (
+          <ProfileList data={data} token={token}/>
+        ) : (
+          <ProfileForm
+            data={data}
             disabled={disabled}
-            fullWidth
-            type="text"
-            name="username"
-            id="username"
-            label="Username"
-            autoComplete="username"
-            value={formik?.values?.username}
-            onChange={formik.handleChange}
-            helperText={formik.touched.username ? formik.errors.username : null}
-            error={formik.touched.username ? formik.errors.username : null}
+            setDisabled={setDisabled}
+            getUsers={getUsers}
           />
+        )}
 
-          <TextField
-            variant="outlined"
-            required
-            fullWidth
-            disabled={disabled}
-            type="email"
-            name="email"
-            id="email"
-            label="Email"
-            autoComplete="email"
-            value={formik?.values?.email}
-            onChange={formik.handleChange}
-            helperText={formik.touched.email ? formik.errors.email : null}
-            error={formik.touched.email ? formik.errors.email : null}
-          />
-          <TextField
-            style={{ marginTop: theme.spacing(3) }}
-            variant="outlined"
-            required
-            fullWidth
-            disabled={disabled}
-            type="text"
-            name="mobile"
-            id="mobile"
-            label="Phone Number"
-            autoComplete="mobile"
-            value={formik?.values?.mobile}
-            onChange={formik.handleChange}
-            helperText={formik.touched.mobile ? formik.errors.mobile : null}
-            error={formik.touched.mobile ? formik.errors.mobile : null}
-          />
-
-          <Button
-            disabled={disabled}
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="secondary"
-            size="large"
-            style={{ marginTop: theme.spacing(4) }}
-            onClick={formik.handleSubmit}
+        {token ? null : (
+          <Grid
+            item
+            container
+            style={{
+              marginTop: theme.spacing(2),
+              marginLeft: theme.spacing(12),
+            }}
           >
-            Save
-          </Button>
-        </form>
+            <Typography>Go back to ? </Typography>
+            <Link
+              to="/"
+              variant="body2"
+              style={{
+                textDecoration: "none",
+                marginLeft: theme.spacing(0.5),
+                color: theme.palette.common.aceOrange,
+              }}
+            >
+              {"Sign In"}
+            </Link>
+          </Grid>
+        )}
       </Paper>
     </Box>
   );

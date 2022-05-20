@@ -25,8 +25,8 @@ import { LOGIN_USER } from "../graphql/Queries";
 import { toast } from "react-toastify";
 
 function Login() {
-    // const { loading, error, data } = useMutation(LOGIN_USER);
-    const [getlogin, { loading, data, error }] = useMutation(LOGIN_USER);
+  // const { loading, error, data } = useMutation(LOGIN_USER);
+  const [getlogin, { loading, data, error }] = useMutation(LOGIN_USER);
   const navigate = useNavigate();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const formik = useFormik({
@@ -43,16 +43,21 @@ function Login() {
     }),
     onSubmit: async (data1, danger) => {
       console.log(data);
-     
-      getlogin({ variables: data1 }).then((res)=> {
-        localStorage.setItem("token", JSON.stringify(res.data.loginUser.id));
-        navigate('/profile')
-        toast.success(`Hello ${res.data.loginUser.username}`)
-    
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
+
+      getlogin({ variables: data1 })
+        .then((res) => {
+          localStorage.setItem("token", JSON.stringify(res.data.loginUser.id));
+          const token = localStorage.getItem("token");
+          if (token) {
+            navigate("/");
+            navigate("/profile");
+            toast.success(`Hello ${res.data.loginUser.username}`);
+
+          }
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
       // navigate('/profile', {state: data})
     },
   });
@@ -60,7 +65,7 @@ function Login() {
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
   };
- console.log(data);
+  console.log(data);
   return (
     <Box
       sx={{
@@ -133,7 +138,7 @@ function Login() {
               {formik.touched.password ? formik.errors.password : null}
             </FormHelperText>
           </FormControl>
-       
+
           <Button
             type="submit"
             fullWidth

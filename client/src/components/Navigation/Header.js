@@ -19,10 +19,13 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Badge from "@mui/material/Badge";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
 function Header(props) {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   const { window } = props;
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -111,7 +114,9 @@ function Header(props) {
             noWrap
             component="div"
             textTransform="capitalize"
-          >CRUD APP</Typography>
+          >
+            CRUD APP
+          </Typography>
 
           <Box sx={{ display: { xs: "none", md: "flex" }, marginLeft: "auto" }}>
             {/* <IconButton
@@ -126,6 +131,28 @@ function Header(props) {
                 sx={{ width: 34, height: 34 }}
               />
             </IconButton> */}
+            {token ? (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  navigate("/");
+                }}
+              >
+                Logout
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Login
+              </Button>
+            )}
           </Box>
 
           <Box sx={{ display: { xs: "flex", md: "none" }, marginLeft: "auto" }}>

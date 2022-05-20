@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import Box from "@mui/material/Box";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -47,7 +47,6 @@ function Register() {
     onSubmit: async (data, reset) => {
       console.log(data);
       await addUser({ variables: data }).catch((error) =>
-     
         toast.error(error.message)
       );
       reset.resetForm({
@@ -56,7 +55,7 @@ function Register() {
         password: "",
         mobile: "",
       });
-      navigate('/login')
+      await navigate("/");
     },
   });
 
