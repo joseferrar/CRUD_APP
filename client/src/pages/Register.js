@@ -56,6 +56,7 @@ function Register() {
         password: "",
         mobile: "",
       });
+      navigate('/login')
     },
   });
 

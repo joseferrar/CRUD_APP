@@ -27,7 +27,6 @@ import { toast } from "react-toastify";
 function Login() {
     // const { loading, error, data } = useMutation(LOGIN_USER);
     const [getlogin, { loading, data, error }] = useMutation(LOGIN_USER);
-    const [danger, setDanger] = React.useState();
   const navigate = useNavigate();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const formik = useFormik({
@@ -47,14 +46,13 @@ function Login() {
      
       getlogin({ variables: data1 }).then((res)=> {
         localStorage.setItem("token", JSON.stringify(res.data.loginUser.id));
-        toast.success(`Hello ${res.data.loginUser.username}`)
         navigate('/profile')
+        toast.success(`Hello ${res.data.loginUser.username}`)
+    
       })
       .catch((error) => {
         toast.error(error.message);
       });
-      setDanger(error)
-      console.log('error', danger)
       // navigate('/profile', {state: data})
     },
   });

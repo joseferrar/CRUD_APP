@@ -37,6 +37,17 @@ const DELETE_USER = gql`
   }
 `;
 
+const GET_USER = gql`
+  {
+    users {
+      username
+      email
+      mobile
+      id
+    }
+  }
+`;
+
 const GET_USER_ID = gql`
   query user($id: ID!) {
     user(id: $id) {
@@ -80,6 +91,7 @@ export {
   CREATE_LINK_MUTATION,
   DELETE_USER,
   GET_USER_ID,
+  GET_USER,
   LOGIN_USER,
   UPDATE_USER,
 };

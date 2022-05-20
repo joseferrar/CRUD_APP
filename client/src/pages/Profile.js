@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import React, { useEffect, useState } from "react";
+import { gql, useQuery, useMutation, useLazyQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -11,7 +11,12 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { theme } from "../theme/default";
-import { GET_DOG_PHOTO, GET_USER_ID, UPDATE_USER } from "../graphql/Queries";
+import {
+  GET_DOG_PHOTO,
+  GET_USER,
+  GET_USER_ID,
+  UPDATE_USER,
+} from "../graphql/Queries";
 import { toast } from "react-toastify";
 
 function Profile() {
@@ -22,24 +27,30 @@ function Profile() {
   const { loading, data } = useQuery(GET_USER_ID, {
     variables: { id: userData },
   });
+  const [getUsers, { data: getuser, error }] = useLazyQuery(GET_USER);
+
   const [updateUser, { data: datae }] = useMutation(UPDATE_USER);
   console.log(data?.user?.email);
   const [disabled, setDisabled] = useState(true);
+
+  const initialValues = {
+    username: data?.user?.username,
+    email: data?.user?.email,
+    mobile: data?.user?.mobile,
+    id: data?.user?.id,
+  }
   const formik = useFormik({
-    initialValues: {
-      username: data?.user?.username,
-      email: data?.user?.email,
-      mobile: data?.user?.mobile,
-      id: data?.user?.id
-    },
+    initialValues,
     validationSchema: yup.object({
       username: yup.string().required("Username is required"),
       email: yup.string().email().required("Email is required"),
       mobile: yup.number().required("Phone Number is required"),
     }),
     onSubmit: async (data) => {
-      console.log('dataaaaaaaaaaaaaaaaaaaa',data);
-      await updateUser({variables: data})
+      console.log("dataaaaaaaaaaaaaaaaaaaa", data);
+      await updateUser({ variables: data });
+      await getUsers();
+
       toast.success("Updated sucessfully!!!");
       setDisabled(true);
     },
@@ -48,8 +59,7 @@ function Profile() {
   const Editbtn = () => {
     setDisabled(!disabled);
   };
- 
-
+console.log("loag", loading)
   return (
     <Box
       sx={{
