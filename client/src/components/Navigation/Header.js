@@ -3,22 +3,16 @@ import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
-import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import TranslateIcon from "@mui/icons-material/Translate";
 import Sidebar from "./Sidebar";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import Badge from "@mui/material/Badge";
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -119,18 +113,6 @@ function Header(props) {
           </Typography>
 
           <Box sx={{ display: { xs: "none", md: "flex" }, marginLeft: "auto" }}>
-            {/* <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-haspopup="true"
-            >
-              <Avatar
-                alt="Remy Sharp"
-  
-                sx={{ width: 34, height: 34 }}
-              />
-            </IconButton> */}
             {token ? (
               <Button
                 variant="contained"
@@ -173,14 +155,13 @@ function Header(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },

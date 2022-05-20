@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { gql, useMutation, useLazyQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -13,19 +13,15 @@ import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import { theme } from "../theme/default";
 import { LOGIN_USER } from "../graphql/Queries";
 import { toast } from "react-toastify";
 
 function Login() {
-  // const { loading, error, data } = useMutation(LOGIN_USER);
   const [getlogin, { loading, data, error }] = useMutation(LOGIN_USER);
   const navigate = useNavigate();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -52,13 +48,11 @@ function Login() {
             navigate("/");
             navigate("/profile");
             toast.success(`Hello ${res.data.loginUser.username}`);
-
           }
         })
         .catch((error) => {
           toast.error(error.message);
         });
-      // navigate('/profile', {state: data})
     },
   });
 

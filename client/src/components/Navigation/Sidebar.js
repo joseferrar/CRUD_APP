@@ -2,15 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useNavigate, useLocation } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
-import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import WorkIcon from "@mui/icons-material/Work";
 import { theme } from "../../theme/default";
 
 const useStyles = makeStyles({
@@ -91,7 +86,6 @@ const Sidebar = (props) => {
                 location.pathname === item.path ? classes.active : null
               }
             >
-              {/* <ListItemText primary={item.name} color={theme.palette.default.main} /> */}
               <Typography
                 variant="body1"
                 className={

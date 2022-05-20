@@ -6,27 +6,17 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import { theme } from "../theme/default";
-import {
-  GET_DOG_PHOTO,
-  GET_USER,
-  GET_USER_ID,
-  UPDATE_USER,
-} from "../graphql/Queries";
-import { toast } from "react-toastify";
+import { GET_USER, GET_USER_ID } from "../graphql/Queries";
 import ProfileForm from "../components/Forms/ProfileForm";
 import ProfileList from "../components/Lists/ProfileList";
 
 function Profile() {
   const token = localStorage.getItem("token");
   const userData = JSON.parse(token);
-  // const { loading, error, data } = useQuery(GET_DOG_PHOTO);
-  const id = "6285dc5b13312d39e92b06e2";
   const { loading, data } = useQuery(GET_USER_ID, {
     variables: { id: userData },
   });
@@ -36,12 +26,12 @@ function Profile() {
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [userData]);
 
   const Editbtn = () => {
     setDisabled(!disabled);
   };
-  console.log("loag", loading);
+
   return (
     <Box
       sx={{
@@ -78,7 +68,7 @@ function Profile() {
           </IconButton>
         </div>
         {disabled ? (
-          <ProfileList data={data} token={token}/>
+          <ProfileList data={data} token={token} />
         ) : (
           <ProfileForm
             data={data}
@@ -87,7 +77,6 @@ function Profile() {
             getUsers={getUsers}
           />
         )}
-
         {token ? null : (
           <Grid
             item
