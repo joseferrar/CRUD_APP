@@ -65,8 +65,12 @@ const Muatation = new GraphQLObjectType({
         var emailExists = await userSchema.findOne({ email: args.email });
         if (emailExists) {
           console.log(emailExists);
-          if (emailExists.password !== args.password) {
-            throw new Error("Password not exist !!!");
+          // if (emailExists.password !== args.password) {
+          //   throw new Error("Password not exist !!!");
+          // }
+          const valid = await bcrypt.compare(args.password, emailExists.password)
+          if (!valid) {
+            throw new Error('Invalid password')
           }
           return userSchema.findOne({ email: args.email });
         } else {
