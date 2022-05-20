@@ -1,6 +1,6 @@
 const graphql = require("graphql");
 const _ = require("lodash");
-const bcrypt = require('bcryptjs')
+const bcrypt = require("bcryptjs");
 const users = require("../models/users");
 const userSchema = require("../models/users");
 const {
@@ -64,6 +64,10 @@ const Muatation = new GraphQLObjectType({
       async resolve(parent, args) {
         var emailExists = await userSchema.findOne({ email: args.email });
         if (emailExists) {
+          console.log(emailExists);
+          if (emailExists.password !== args.password) {
+            throw new Error("Password not exist !!!");
+          }
           return userSchema.findOne({ email: args.email });
         } else {
           throw new Error("Email not exist !!!");

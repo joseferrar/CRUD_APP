@@ -30,8 +30,8 @@ mongoose.connection.on("err", (err) => {
   console.log("mongoose error", err);
 });
 
-app.use(express.json())
-app.use(express.urlencoded({extended: false}))
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 //frontend production
 app.use(express.static(path.join(__dirname, "./client/build")));
 app.get("*", function (_, res) {
