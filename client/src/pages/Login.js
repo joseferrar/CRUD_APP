@@ -47,7 +47,7 @@ function Login() {
           if (token) {
             navigate("/");
             navigate("/profile");
-            toast.success(`Hello ${res.data.loginUser.username}`);
+            toast.success(`Welcome ${res.data.loginUser.username}`);
           }
         })
         .catch((error) => {

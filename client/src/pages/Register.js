@@ -43,16 +43,20 @@ function Register() {
     }),
     onSubmit: async (data, reset) => {
       console.log(data);
-      await addUser({ variables: data }).catch((error) =>
-        toast.error(error.message)
-      );
+      await addUser({ variables: data })
+        .then((res) => {
+          toast.success(
+            `Hello ${res.data.addUser.username} please login your account !!!`
+          );
+          navigate("/");
+        })
+        .catch((error) => toast.error(error.message));
       reset.resetForm({
         username: "",
         email: "",
         password: "",
         mobile: "",
       });
-      await navigate("/");
     },
   });
 

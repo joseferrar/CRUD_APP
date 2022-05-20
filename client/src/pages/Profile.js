@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { gql, useQuery, useMutation, useLazyQuery } from "@apollo/client";
+import React, { useState } from "react";
+import { useQuery, useLazyQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
@@ -23,10 +21,6 @@ function Profile() {
   const [getUsers, { data: getuser, error }] = useLazyQuery(GET_USER);
 
   const [disabled, setDisabled] = useState(true);
-
-  useEffect(() => {
-    getUsers();
-  }, [userData]);
 
   const Editbtn = () => {
     setDisabled(!disabled);
@@ -57,15 +51,17 @@ function Profile() {
           <Typography component="h1" variant="h5">
             {disabled ? "My Profile" : "Edit Profile"}
           </Typography>
-          <IconButton
-            onClick={Editbtn}
-            color="success"
-            aria-label="upload picture"
-            component="span"
-            style={{ marginLeft: "auto" }}
-          >
-            <EditIcon />
-          </IconButton>
+          {token ? (
+            <IconButton
+              onClick={Editbtn}
+              color="success"
+              aria-label="upload picture"
+              component="span"
+              style={{ marginLeft: "auto" }}
+            >
+              <EditIcon />
+            </IconButton>
+          ) : null}
         </div>
         {disabled ? (
           <ProfileList data={data} token={token} />
@@ -74,7 +70,6 @@ function Profile() {
             data={data}
             disabled={disabled}
             setDisabled={setDisabled}
-            getUsers={getUsers}
           />
         )}
         {token ? null : (

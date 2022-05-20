@@ -6,10 +6,9 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { theme } from "../../theme/default";
 import { UPDATE_USER } from "../../graphql/Queries";
-import { toast } from "react-toastify";
 
 function ProfileForm(props) {
-  const { data, disabled, setDisabled, getUsers } = props;
+  const { data, disabled, setDisabled } = props;
 
   const [updateUser, { data: datae }] = useMutation(UPDATE_USER);
 
@@ -28,7 +27,6 @@ function ProfileForm(props) {
     }),
     onSubmit: async (data) => {
       await updateUser({ variables: data });
-      await toast.success("Updated sucessfully!!!");
       await window.location.reload(false);
       setDisabled(true);
     },
